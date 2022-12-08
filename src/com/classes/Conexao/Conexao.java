@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class Conexao {
 
-    final static String NOME_DO_BANCO = "leilao";
+    final static String NOME_DO_BANCO = "trabalholeilao";
 
     public static Connection conectar() {
         try {

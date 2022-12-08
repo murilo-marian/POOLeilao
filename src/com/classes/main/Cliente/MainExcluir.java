@@ -1,10 +1,10 @@
-package com.classes.main.Pessoa;
+package com.classes.main.Cliente;
 
 import com.classes.BO.PessoaBO;
 
-public class MainPesquisaTudo {
+public class MainExcluir {
     public static void main(String[] args) {
         PessoaBO teste = new PessoaBO();
-        System.out.println(teste.pesquisarTudo());
+        teste.excluir(13201314927L);
     }
 }

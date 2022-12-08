@@ -3,14 +3,16 @@ package com.classes.BO;
 import com.classes.DAO.PessoaDAO;
 import com.classes.DTO.Pessoa;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 public class PessoaBO {
-    public boolean inserir(Pessoa pessoa) {
+    public boolean inserir(Pessoa pessoa, String senha) {
         if (!existeCpf(pessoa.getCpf())) {
             if (checaCPF(pessoa.getCpf())) {
                 PessoaDAO pessoaDAO = new PessoaDAO();
-                return pessoaDAO.inserir(pessoa);
+                return pessoaDAO.inserir(pessoa, senha);
 
             }
             return false;
@@ -38,6 +40,8 @@ public class PessoaBO {
         }
     }
 
+
+
     public int[] cpfPraArray(long cpf) {
         String cpfString = Long.toString(cpf);
         int[] cpfArray = new int[12];
@@ -47,15 +51,30 @@ public class PessoaBO {
         return cpfArray;
     }
 
-    public boolean alterar(Pessoa pessoa, Pessoa alterada) {
-            PessoaDAO pessoaDao = new PessoaDAO();
-            return pessoaDao.alterar(pessoa, alterada);
+    public byte[] getSalt() throws NoSuchAlgorithmException {
+        PessoaDAO pessoaDAO = new PessoaDAO();
+        return pessoaDAO.getSalt();
     }
 
-    public boolean excluir(Pessoa pessoa) {
-        if ((existeCpf(pessoa.getCpf()))) {
+    public String criptografaSenha(String senha, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        PessoaDAO pessoaDAO = new PessoaDAO();
+        return pessoaDAO.criptografaSenha(senha, salt);
+    }
+
+    public boolean testaSenha(long cpf, String senha) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        PessoaDAO pessoaDAO = new PessoaDAO();
+        return pessoaDAO.testaSenha(cpf, senha);
+    }
+
+    public boolean alterar(Pessoa pessoa, Pessoa alterada) {
+        PessoaDAO pessoaDao = new PessoaDAO();
+        return pessoaDao.alterar(pessoa, alterada);
+    }
+
+    public boolean excluir(long cpf) {
+        if ((existeCpf(cpf))) {
             PessoaDAO pessoaDAO = new PessoaDAO();
-            return  pessoaDAO.excluir(pessoa.getId());
+            return  pessoaDAO.excluir(procuraCpf(cpf).getId());
         }
         return false;
     }
@@ -71,6 +90,11 @@ public class PessoaBO {
     public List<Pessoa> procurarPorNome(String nome) {
         PessoaDAO pessoaDAO = new PessoaDAO();
         return pessoaDAO.procurarPorNome(nome);
+    }
+
+    public Pessoa procuraCpf(long cpf) {
+        PessoaDAO pessoaDAO = new PessoaDAO();
+        return pessoaDAO.procuraCpf(cpf);
     }
 
     public List<Pessoa> pesquisarTudo() {
