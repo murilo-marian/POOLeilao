@@ -1,19 +1,27 @@
 package com.classes.DTO;
 
-import javax.xml.crypto.Data;
 import java.sql.Date;
+import java.util.Arrays;
 
-public class Pessoa {
+public abstract class Pessoa {
     private int id;
     private String nome;
     private long cpf;
     private Date dataNascimento;
+    private String senha;
+    private byte[] salt;
 
-    public Pessoa(String nome, long cpf, String dataNascimento) {
-        this.id = id;
+    public boolean isEmpty() {
+        if (this.getId() == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public Pessoa(String nome, long cpf, Date dataNascimento) {
         this.nome = nome;
         this.cpf = cpf;
-        this.dataNascimento = Date.valueOf(dataNascimento);
+        this.dataNascimento = dataNascimento;
     }
 
     public Pessoa(long cpf) {
@@ -33,6 +41,22 @@ public class Pessoa {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     public String getNome() {
@@ -62,10 +86,11 @@ public class Pessoa {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Pessoa{");
-        sb.append("id=").append(id);
         sb.append(", nome='").append(nome).append('\'');
         sb.append(", cpf=").append(cpf);
         sb.append(", dataNascimento=").append(dataNascimento);
+        sb.append(", senha='").append(senha).append('\'');
+        sb.append(", salt=").append(Arrays.toString(salt));
         sb.append('}');
         return sb.toString();
     }
