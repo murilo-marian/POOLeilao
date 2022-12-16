@@ -1,19 +1,28 @@
 package com.classes.DTO;
 
-import com.classes.BO.PessoaBO;
-
-import javax.xml.crypto.Data;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.Date;
 import java.util.Arrays;
 
 public abstract class Pessoa {
+    private int id;
     private String nome;
     private long cpf;
     private Date dataNascimento;
     private String senha;
     private byte[] salt;
+
+    public boolean isEmpty() {
+        if (this.getId() == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public Pessoa(String nome, long cpf, Date dataNascimento) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+    }
 
     public Pessoa(long cpf) {
         this.cpf = cpf;
@@ -26,13 +35,12 @@ public abstract class Pessoa {
     public Pessoa() {
     }
 
-    public boolean logar(long cpf, String senha) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        PessoaBO testa = new PessoaBO();
-        if (testa.testaSenha(cpf, senha)) {
-            return true;
-        } else {
-            return false;
-        }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSenha() {

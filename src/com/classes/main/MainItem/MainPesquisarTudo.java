@@ -1,4 +1,4 @@
-package com.classes.main.Item;
+package com.classes.main.MainItem;
 
 import com.classes.BO.ItemBO;
 import com.classes.DTO.Item;

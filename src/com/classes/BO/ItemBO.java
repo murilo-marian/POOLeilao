@@ -5,41 +5,51 @@ import com.classes.DTO.Item;
 import java.util.List;
 
 public class ItemBO {
+    //Create
     public boolean inserir(Item item) {
-                ItemDAO pessoaDAO = new ItemDAO();
-                return pessoaDAO.inserir(item);
+                ItemDAO itemDAO = new ItemDAO();
+                return itemDAO.inserir(item);
     }
 
+    //UPDATE
     public boolean alterar(Item item, Item alterada) {
-        ItemDAO pessoaDao = new ItemDAO();
-        return pessoaDao.alterar(item, alterada);
+        ItemDAO itemDAO = new ItemDAO();
+        return itemDAO.alterar(item, alterada);
     }
 
+    //DELETE
     public boolean excluir(int id) {
         if (existe(id)) {
-            ItemDAO pessoaDAO = new ItemDAO();
-            return pessoaDAO.excluir(id);
+            ItemDAO itemDAO = new ItemDAO();
+            return itemDAO.excluir(id);
         }
         return false;
     }
 
+    //READ
     public Item procurarPorId(int id) {
-        ItemDAO pessoaDAO = new ItemDAO();
-        return pessoaDAO.procurarPorId(id);
+        ItemDAO itemDAO = new ItemDAO();
+        return itemDAO.procurarPorId(id);
     }
 
     public List<Item> procurarPorNome(String nome) {
-        ItemDAO pessoaDAO = new ItemDAO();
-        return pessoaDAO.procurarPorNome(nome);
+        ItemDAO itemDAO = new ItemDAO();
+        return itemDAO.procurarPorNome(nome);
     }
 
     public List<Item> pesquisarTudo() {
-        ItemDAO pessoaDAO = new ItemDAO();
-        return  pessoaDAO.pesquisarTodos();
+        ItemDAO itemDAO = new ItemDAO();
+        return itemDAO.pesquisarTodos();
+    }
+    
+    public List<Item> pesquisarDono(int id) {
+        ItemDAO itemDAO = new ItemDAO();
+        return itemDAO.pesquisarDono(id);
     }
 
+    //Checa existência
     public boolean existe(int id) {
-        ItemDAO pessoaDAO = new ItemDAO();
-        return pessoaDAO.existe(id);
+        ItemDAO itemDAO = new ItemDAO();
+        return itemDAO.existe(id);
     }
 }
