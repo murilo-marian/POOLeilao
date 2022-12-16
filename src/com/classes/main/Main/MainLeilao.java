@@ -116,8 +116,6 @@ public class MainLeilao {
         } else {
             System.out.println("Problema no registro, tente novamente");
         }
-
-        entrada.close();
     }
 
     private static void registroFuncionario() {
@@ -145,22 +143,19 @@ public class MainLeilao {
         } else {
             System.out.println("Problema no registro, tente novamente");
         }
-
-        entrada.close();
     }
 
     private static long cpfRegistro() {
         Scanner entrada = new Scanner(System.in);
+        ClienteBO clienteBO = new ClienteBO();
         long cpf;
         while (true) {
             System.out.print("CPF: ");
             cpf = entrada.nextLong();
-            entrada.nextLine();
-            if (!checaCPF(cpf)) {
+            if (!checaCPF(cpf) || clienteBO.existeCpf(cpf)) {
                 System.out.println("CPF inválido, tente novamente");
                 cpf = 0;
             } else {
-                entrada.close();
                 return cpf;
             }
         }
@@ -306,6 +301,12 @@ public class MainLeilao {
         System.out.println("O item da noite de hoje é: " + atual.getItemNome());
         System.out.println("O lance inicial será de R$" + atual.getItemValor());
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         int quantFakes = gera.nextInt(2, 6);
         List<ClienteFake> clienteFake = new ArrayList<>();
         for (int i = 0; i < quantFakes; i++) {
@@ -323,7 +324,8 @@ public class MainLeilao {
                 if (fake.getLimite() > lanceAtual) {
                     double lance = fake.aleatorizaLance(lanceAtual);
                     if (lance == 0) {
-                        System.out.println(fake.getNome() + " absteu-se dessa rodada");;
+                        System.out.println(fake.getNome() + " absteu-se dessa rodada");
+                        ;
                         lancadores.add(fake);
                         lances.add(BigDecimal.valueOf(0));
                     } else {
@@ -337,10 +339,15 @@ public class MainLeilao {
                     System.out.println(fake.getNome() + " desistiu do leilão");
                 }
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+            }
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
             clienteFake.removeAll(desistentes);
             System.out.println("Preço Base: R$" + valorBase + "  Ultimo lance: R$" + lanceAtual);
@@ -372,6 +379,13 @@ public class MainLeilao {
             atual.setItemValor(lanceAtual + diferencialValor);
             System.out.println("Após conversar com um especialista " +
                     "você descobriu que o seu item vale " + atual.getItemValor());
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
             atual.setItemDono(clienteLogado.getId());
             clienteBO.atualizarFundos(fundos, clienteLogado.getId());
             itemBO.inserir(atual);
@@ -412,26 +426,40 @@ public class MainLeilao {
         Scanner entrada = new Scanner(System.in);
         ItemBO itemBO = new ItemBO();
         System.out.println("Visualização de inventário");
+
         List<Item> inventario = itemBO.pesquisarDono(clienteLogado.getId());
-        for (Item item : inventario) {
-            System.out.println("ID:" + item.getItemId());
-            System.out.println("Nome: " + item.getItemNome());
-            System.out.println("Valor: " + item.getItemValor());
+        if (inventario != null) {
+            for (Item item : inventario) {
+                System.out.println("--------------------------");
+                System.out.println("ID:" + item.getItemId());
+                System.out.println("Nome: " + item.getItemNome());
+                System.out.println("Valor: " + item.getItemValor());
+                System.out.println("--------------------------");
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            System.out.println("Deseja vender algum de seus itens? (S/N)");
+            if (entrada.nextLine().equalsIgnoreCase("s")) {
+                System.out.println("Digite o ID do item a ser vendido");
+                int vendido = entrada.nextInt();
+                if (clienteLogado.vender(vendido)) {
+                    System.out.println("Item vendido com sucesso, fundos adicionados");
+                } else {
+                    System.out.println("Erro na venda, tente novamente");
+                }
+            }
+        } else {
             try {
-                Thread.sleep(500);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }
-        System.out.println("Deseja vender algum de seus itens? (S/N)");
-        if (entrada.nextLine().equalsIgnoreCase("s")) {
-            System.out.println("Digite o ID do item a ser vendido");
-            int vendido = entrada.nextInt();
-            if (clienteLogado.vender(vendido)) {
-                System.out.println("Item vendido com sucesso, fundos adicionados");
-            } else {
-                System.out.println("Erro na venda, tente novamente");
-            }
+            System.out.println("Inventário Vazio");
         }
     }
 
@@ -451,7 +479,7 @@ public class MainLeilao {
             System.out.println("Tenha um bom dia");
         }
         try {
-            Thread.sleep(200);
+            Thread.sleep(700);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -484,6 +512,12 @@ public class MainLeilao {
         System.out.println("O item da noite de hoje é: " + atual.getItemNome());
         System.out.println("O lance inicial será de R$" + atual.getItemValor());
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         int quantFakes = gera.nextInt(3, 6);
         List<ClienteFake> clienteFake = new ArrayList<>();
         for (int i = 0; i < quantFakes; i++) {
@@ -515,14 +549,14 @@ public class MainLeilao {
                     System.out.println(fake.getNome() + " desistiu do leilão");
                 }
                 try {
-                    Thread.sleep(1500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
             clienteFake.removeAll(desistentes);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
